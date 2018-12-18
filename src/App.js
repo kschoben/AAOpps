@@ -15,8 +15,38 @@ const customPanelStyle = {
   overflow: 'hidden',
 };
 
+
+
 class App extends Component {
+  
+  state = {
+      title: "Submenu",
+      text: "text",
+      group:["text 1","text2"],
+      sections:[{
+        title: 'hello',
+        text: 'derp'
+      }]
+  }
+  componentDidMount(){
+    var main = {
+      title:"fgfdg",
+      text:"terfd"
+    };
+
+    console.log("state", this.state)
+   
+    this.setState({
+      ...this.state,
+      sections:[ ...this.state.sections, main]
+    })
+  }
+   
+  
+  
+
   render() {
+    console.log("sectionmain ",this.state);
     return (
       <Layout className="layout">
       <Header>
@@ -53,7 +83,7 @@ class App extends Component {
                     <Input addonBefore="Section Title:" defaultValue="" />
                   </div>
                   <div>
-                    <AddSectionButton/>
+                    <AddButton text="" onClick=""/>
                     <AddGroupButton/>
                     <AddTextButton/>
                     <AddTableButton/>
@@ -90,8 +120,8 @@ class AddTextButton extends React.Component {
   }
   render() {
       return (
-        <Button type="dashed" onClick = {this.addText}>
-          <Icon type="plus" /> Add Text
+        <Button type="dashed" onClick = {this.props.onClick}>
+          <Icon type="plus" /> {this.props.text}}
         </Button>
       );
   }
