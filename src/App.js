@@ -15,7 +15,26 @@ const customPanelStyle = {
   overflow: 'hidden',
 };
 
+
 class App extends Component {
+state = { 
+  operations:{
+    title:"",
+    subtitle:"",
+    sections:[]
+  },
+  section:{
+    title:"",
+    text:"",
+    group: [],
+    sections:[]
+  }
+}
+
+changeText(e){
+  this.setState({title: e.target.value});
+}
+
   render() {
     return (
       <Layout className="layout">
@@ -42,37 +61,24 @@ class App extends Component {
           <div>
              <Input addonBefore="Manual SubTitle:" defaultValue="" />
           </div>  
-            <Collapse accordion defaultActiveKey={['1']}>
-              <Panel header="Untitled" key="1" style={customPanelStyle}>
-                <div style={{ marginBottom: 16 }}>
-                  <Input addonBefore="Section Title:" defaultValue="" />
-                </div>
-                <Collapse accordion defaultActiveKey={['1']}>
-                <Panel header="Untitled" key="1" style={customPanelStyle}>
-                  <div style={{ marginBottom: 16 }}>
-                    <Input addonBefore="Section Title:" defaultValue="" />
-                  </div>
-                  <div>
-                    <AddSectionButton/>
-                    <AddGroupButton/>
-                    <AddTextButton/>
-                    <AddTableButton/>
-                  </div>
-                </Panel>
-              </Collapse>
-                <div>
-                  <AddSectionButton/>
-                  <AddGroupButton/>
-                  <AddTextButton/>
-                  <AddTableButton/>
-                </div>
-              </Panel>
-            </Collapse> 
+          <Collapse accordion defaultActiveKey={['1']}>
+          <Panel header={this.state.operations.title} key="1" style={customPanelStyle}>
+            <div style={{ marginBottom: 16 }}>
+              <Input addonBefore="Section Title:" defaultValue="" value={this.state.operations.title} onChange={this.changeText}/>
+            </div>
             <div>
-              <AddSectionButton/>
-              <AddGroupButton/>
-              <AddTextButton/>
-              <AddTableButton/>
+              <AddButton text="Section"/>
+              <AddButton text="Group"/>
+              <AddButton text="Text"/>
+              <AddButton text="Table"/>
+            </div>
+          </Panel>
+          </Collapse> 
+            <div>
+              <AddButton text="Section"/>
+              <AddButton text="Group"/>
+              <AddButton text="Text"/>
+              <AddButton text="Table"/>
             </div>
           </div>
       </Content>
@@ -84,54 +90,16 @@ class App extends Component {
   }
 }
 
-class AddTextButton extends React.Component {
-  addText (){
-      alert ('Text')
-  }
+class AddButton extends React.Component {
   render() {
       return (
-        <Button type="dashed" onClick = {this.addText}>
-          <Icon type="plus" /> Add Text
+        <Button type="dashed" text={this.props.text} onClick = {this.props.onClick}>
+          <Icon type="plus" /> {this.props.text}
         </Button>
       );
   }
 }
 
-class AddGroupButton extends React.Component {
-  addText (){
-      alert ('Group')
-  }
-  render() {
-      return (
-        <Button type="dashed" onClick = {this.addText}>
-          <Icon type="plus" /> Add Group
-        </Button>
-      );
-  }
-}
-
-class AddSectionButton extends React.Component {
-  addText (){
-      alert ('Section')
-  }
-  render() {
-      return (
-        <Button type="dashed" onClick = {this.addText}>
-          <Icon type="plus" /> Add Section
-        </Button>
-      );
-  }
-}
-class AddTableButton extends React.Component {
-  addText (){
-      alert ('Table')
-  }
-  render() {
-      return (
-        <Button type="dashed" onClick = {this.addText}>
-          <Icon type="plus" /> Add Table
-        </Button>
-      );
-  }
-}
 export default App;
+
+
