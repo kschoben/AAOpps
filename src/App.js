@@ -100,15 +100,15 @@ changeHandlerSection = (e) =>{
             <div>
               <AddButton text="Section"/>
               <AddButton text="Group"/>
-              <AddButton text="Text"/>
-              <AddButton text="Table"/>
+              <AddButton text="Text" />
+              <AddButton text="Table" />
             </div>
           </Panel>
           </Collapse> 
             <div>
               <AddButton text="Section"/>
               <AddButton text="Group"/>
-              <AddButton text="Text"/>
+              <AddButton text="Text" onClick = {AddText}/>
               <AddButton text="Table"/>
             </div>
           </div>
@@ -120,8 +120,26 @@ changeHandlerSection = (e) =>{
     )
   }
 }
+// const onAddItem = (e) => {
+//   // not allowed AND not working
+//   this.setState(state => {
+//     this.state.text = this.state.text.push(e);
+//   });
+//   console.log(this.state.text)
+// };
+ const AddText = () =>{
+  console.log("works")
+  // var newtextentry = "";
+  // onAddItem(newtextentry)
+  return(
+    <div>
+      <Input defaultValue="" id="title"  />
+    </div>  
+  )
+}
 
 class AddButton extends React.Component {
+
   render() {
       return (
         <Button type="dashed" text={this.props.text} onClick = {this.props.onClick}>
