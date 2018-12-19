@@ -40,10 +40,8 @@ changeHandlerOperation = (e) =>{
 
   this.setState(prevState => ({
     ...prevState,
-    operations: {
-      ...prevState.operations,
-      [id]: value
-    }
+    [id]: value
+
     })
   )
 }
@@ -83,16 +81,16 @@ changeHandlerSection = (e) =>{
         <div >
           <Row style={{justify:"center"}}>
             <Col span={12} offset={6}>
-                {this.state.operations.title}-{this.state.operations.subtitle}
+                {this.state.title}-{this.state.subtitle}
             </Col>
           </Row>
         </div>
         <div style={{ background: '#fff', padding: 24 }}>
           <div>
-            <Input addonBefore="Manual Title:" defaultValue="" id="title" value={this.state.operations.title} onChange={this.changeHandlerOperation.bind(this)}/>
+            <Input addonBefore="Manual Title:" defaultValue="" id="title" value={this.state.title} onChange={this.changeHandlerOperation.bind(this)}/>
           </div>  
           <div>
-             <Input addonBefore="Manual SubTitle:" defaultValue="" id="subtitle" value={this.state.operations.subtitle} onChange={this.changeHandlerOperation.bind(this)}/>
+             <Input addonBefore="Manual SubTitle:" defaultValue="" id="subtitle" value={this.state.subtitle} onChange={this.changeHandlerOperation.bind(this)}/>
           </div>  
           <Collapse accordion defaultActiveKey={['1']}>
           <Panel  key="1" style={customPanelStyle}>
