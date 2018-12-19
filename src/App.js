@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { Layout, Menu, Breadcrumb, Dropdown, Button, Input, Collapse,Select,Icon} from 'antd';
+import { Layout, Menu, Breadcrumb, Dropdown, Button, Input, Collapse,Select,Icon, Row, Col} from 'antd';
 
 const { Header, Content, Footer } = Layout;
 const Option = Select.Option;
@@ -18,35 +18,50 @@ const customPanelStyle = {
 
 
 class App extends Component {
-  
-  state = {
-      title: "Submenu",
-      text: "text",
-      group:["text 1","text2"],
-      sections:[{
-        title: 'hello',
-        text: 'derp'
-      }]
-  }
-  componentDidMount(){
-    var main = {
-      title:"fgfdg",
-      text:"terfd"
-    };
+state = {
 
-    console.log("state", this.state)
-   
-    this.setState({
-      ...this.state,
-      sections:[ ...this.state.sections, main]
-    })
+    title:"",
+    subtitle:"",
+    text:[],
+    group: [],
+    sections:[],
+
+  section:{
+    title:"",
+    text:[],
+    group: [],
+    sections:[]
   }
-   
-  
-  
+}
+
+changeHandlerOperation = (e) =>{
+  let value = e.target.value;
+  let id = e.target.id
+
+  this.setState(prevState => ({
+    ...prevState,
+    operations: {
+      ...prevState.operations,
+      [id]: value
+    }
+    })
+  )
+}
+changeHandlerSection = (e) =>{
+  let value = e.target.value;
+  let id = e.target.id
+
+  this.setState(prevState => ({
+    ...prevState,
+    section: {
+      ...prevState.section,
+      [id]: value
+    }
+    })
+  )
+}
 
   render() {
-    console.log("sectionmain ",this.state);
     return (
       <Layout className="layout">
       <Header>
@@ -65,44 +80,38 @@ class App extends Component {
           <Breadcrumb.Item>List</Breadcrumb.Item>
           <Breadcrumb.Item>App</Breadcrumb.Item>
         </Breadcrumb>
+        <div >
+          <Row style={{justify:"center"}}>
+            <Col span={12} offset={6}>
+                {this.state.operations.title}-{this.state.operations.subtitle}
+            </Col>
+          </Row>
+        </div>
         <div style={{ background: '#fff', padding: 24 }}>
           <div>
-            <Input addonBefore="Manual Title:" defaultValue="" />
+            <Input addonBefore="Manual Title:" defaultValue="" id="title" value={this.state.operations.title} onChange={this.changeHandlerOperation.bind(this)}/>
           </div>  
           <div>
-             <Input addonBefore="Manual SubTitle:" defaultValue="" />
+             <Input addonBefore="Manual SubTitle:" defaultValue="" id="subtitle" value={this.state.operations.subtitle} onChange={this.changeHandlerOperation.bind(this)}/>
           </div>  
-            <Collapse accordion defaultActiveKey={['1']}>
-              <Panel header="Untitled" key="1" style={customPanelStyle}>
-                <div style={{ marginBottom: 16 }}>
-                  <Input addonBefore="Section Title:" defaultValue="" />
-                </div>
-                <Collapse accordion defaultActiveKey={['1']}>
-                <Panel header="Untitled" key="1" style={customPanelStyle}>
-                  <div style={{ marginBottom: 16 }}>
-                    <Input addonBefore="Section Title:" defaultValue="" />
-                  </div>
-                  <div>
-                    <AddButton text="" onClick=""/>
-                    <AddGroupButton/>
-                    <AddTextButton/>
-                    <AddTableButton/>
-                  </div>
-                </Panel>
-              </Collapse>
-                <div>
-                  <AddSectionButton/>
-                  <AddGroupButton/>
-                  <AddTextButton/>
-                  <AddTableButton/>
-                </div>
-              </Panel>
-            </Collapse> 
+          <Collapse accordion defaultActiveKey={['1']}>
+          <Panel  key="1" style={customPanelStyle}>
+            <div style={{ marginBottom: 16 }}>
+              <Input addonBefore="Section Title:" defaultValue="" />
+            </div>
             <div>
-              <AddSectionButton/>
-              <AddGroupButton/>
-              <AddTextButton/>
-              <AddTableButton/>
+              <AddButton text="Section"/>
+              <AddButton text="Group"/>
+              <AddButton text="Text"/>
+              <AddButton text="Table"/>
+            </div>
+          </Panel>
+          </Collapse> 
+            <div>
+              <AddButton text="Section"/>
+              <AddButton text="Group"/>
+              <AddButton text="Text"/>
+              <AddButton text="Table"/>
             </div>
           </div>
       </Content>
@@ -114,54 +123,22 @@ class App extends Component {
   }
 }
 
-class AddTextButton extends React.Component {
-  addText (){
-      alert ('Text')
-  }
+class AddButton extends React.Component {
   render() {
       return (
-        <Button type="dashed" onClick = {this.props.onClick}>
-          <Icon type="plus" /> {this.props.text}}
+        <Button type="dashed" text={this.props.text} onClick = {this.props.onClick}>
+          <Icon type="plus" /> {this.props.text}
         </Button>
       );
   }
 }
 
-class AddGroupButton extends React.Component {
-  addText (){
-      alert ('Group')
-  }
-  render() {
-      return (
-        <Button type="dashed" onClick = {this.addText}>
-          <Icon type="plus" /> Add Group
-        </Button>
-      );
-  }
-}
 
-class AddSectionButton extends React.Component {
-  addText (){
-      alert ('Section')
-  }
-  render() {
-      return (
-        <Button type="dashed" onClick = {this.addText}>
-          <Icon type="plus" /> Add Section
-        </Button>
-      );
-  }
-}
-class AddTableButton extends React.Component {
-  addText (){
-      alert ('Table')
-  }
-  render() {
-      return (
-        <Button type="dashed" onClick = {this.addText}>
-          <Icon type="plus" /> Add Table
-        </Button>
-      );
-  }
-}
+///addText
+//create div pop up
+//pop up based on state
+// create empty string 
+// length of text list add input ie. text:["dfds",""] add to length.state.text 
+
+
 export default App;
