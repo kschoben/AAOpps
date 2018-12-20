@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { Layout, Menu, Breadcrumb, Dropdown, Button, Input, Collapse,Select,Icon, Row, Col} from 'antd';
+import { Layout, Menu, Breadcrumb, Button, Input, Collapse,Icon, Row, Col} from 'antd';
 
 const { Header, Content, Footer } = Layout;
-const Option = Select.Option;
 const Panel = Collapse.Panel;
 const customPanelStyle = {
   background: 'gray',
@@ -19,18 +17,13 @@ const customPanelStyle = {
 
 class App extends Component {
   objList = [
-    {type:"text", 
-    value: "This is a test "},
-    {type:"text", 
-    value: "This is a test2"},
-    {type:"group", 
-    value: ["This is a text from group 1"," this is another text from group 1"]},
-    {type:"text", 
-    value: "This is a test4"}
+    {type:"text", value: "This is a test "},
+    {type:"text", value: "This is a test2"},
+    {type:"group", value: ["This is a text from group 1","This is a test2"]},
+    {type:"section", value: "This is a test4"}
   ];
 
   state = {
-
       title:"",
       subtitle:"",
       text:[],
@@ -76,7 +69,6 @@ class App extends Component {
       text:[...prevState.text,""]
       })
     )
-
   }
 
   onTextChange = (e) =>{
@@ -119,57 +111,60 @@ class App extends Component {
         </div>
         <div style={{ background: '#fff', padding: 24 }}>
           <div>
-            <Input addonBefore="Manual Title:" defaultValue="" id="title" value={this.state.title} onChange={this.changeHandlerOperation.bind(this)}/>
+            <Input style={{padding:10}} addonBefore="Manual Title:" defaultValue="" id="title" value={this.state.title} onChange={this.changeHandlerOperation.bind(this)}/>
           </div>  
           <div>
-             <Input addonBefore="Manual SubTitle:" defaultValue="" id="subtitle" value={this.state.subtitle} onChange={this.changeHandlerOperation.bind(this)}/>
+             <Input style={{padding:10}} addonBefore="Manual SubTitle:" defaultValue="" id="subtitle" value={this.state.subtitle} onChange={this.changeHandlerOperation.bind(this)}/>
           </div>  
           {/* <div>
              <Input addonBefore="Manual SubTitle:" defaultValue="" id="0" value={this.state.text[0]} onChange={this.onTextChange.bind(this)}/>
           </div>   */}
           <div>
           {
-            this.objList.map((obj)=> {
+            this.objList.map((obj,index)=> {
               if(typeof obj.type === typeof ""){
                 console.log(obj.type)
                 switch(obj.type){
                   case "text":
                     console.log(obj.value)
                       return(
-                        <Input addonBefore="Text:" defaultValue="" id="0" value={obj.value} onChange={this.onTextChange.bind(this)}/>
+                        <Input style={{padding:10}} key={index} addonBefore="Text:" defaultValue="" id="0" value={this.state.text[0]} onChange={this.onTextChange.bind(this)}/>
                       )
                   case "group":
+                      console.log("key: ",index)
+                          return(
+                                  <div key={index} style={{padding:10}}>
+                                      {
+                                          obj.value.map((text,index)=>{
+                                               return(<Input key={index} value={text} addonBefore="Group:"/>)
+                                          })
+                                      }
+                                  </div>
+                              )
+                  case "section":
                   console.log(obj.value)
-                    obj.value.map((string)=>{
-                      console.log(string)
-                      return(
-                      <Input addonBefore="Text:" defaultValue="" id="0" value={string} onChange={this.onTextChange.bind(this)}/>
+                    return(
+                      <Collapse  accordion defaultActiveKey={['1']}>
+                          <Panel style={{padding:10}} key="1" style={customPanelStyle}>
+                            <div style={{ marginBottom: 16 }}>
+                              <Input addonBefore="Section Title:" defaultValue="" />
+                            </div>
+                            <div>
+                              <AddButton text="Section"/>
+                              <AddButton text="Group"/>
+                              <AddButton text="Text" />
+                              <AddButton text="Table" />
+                            </div>
+                          </Panel>
+                      </Collapse>
                     )
-                    })
-                    
+                  }
                 }
-              }
-            })
+              })
+            }
+            </div>
             
-           
-              }
-              </div>
-
-          
-          {/* <Collapse accordion defaultActiveKey={['1']}>
-          <Panel  key="1" style={customPanelStyle}>
-            <div style={{ marginBottom: 16 }}>
-              <Input addonBefore="Section Title:" defaultValue="" />
-            </div>
-            <div>
-              <AddButton text="Section"/>
-              <AddButton text="Group"/>
-              <AddButton text="Text" />
-              <AddButton text="Table" />
-            </div>
-          </Panel>
-          </Collapse>  */}
-            <div>
+            <div style={{padding:10}}>
               <AddButton text="Section"/>
               <AddButton text="Group"/>
               <AddButton text="Text" onClick = {this.addText} />
