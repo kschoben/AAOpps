@@ -18,46 +18,78 @@ const customPanelStyle = {
 
 
 class App extends Component {
-state = {
+  objList = [
+    {type:"text", 
+    value: "This is a test "},
+    {type:"text", 
+    value: "This is a test2"},
+    {type:"group", 
+    value: ["This is a text from group 1"," this is another text from group 1"]},
+    {type:"text", 
+    value: "This is a test4"}
+  ];
 
-    title:"",
-    subtitle:"",
-    text:[],
-    group: [],
-    sections:[],
+  state = {
 
-  section:{
-    title:"",
-    text:[],
-    group: [],
-    sections:[]
-  }
-}
+      title:"",
+      subtitle:"",
+      text:[],
+      group: [],
+      sections:[],
 
-changeHandlerOperation = (e) =>{
-  let value = e.target.value;
-  let id = e.target.id
-
-  this.setState(prevState => ({
-    ...prevState,
-    [id]: value
-
-    })
-  )
-}
-changeHandlerSection = (e) =>{
-  let value = e.target.value;
-  let id = e.target.id
-
-  this.setState(prevState => ({
-    ...prevState,
-    section: {
-      ...prevState.section,
-      [id]: value
+    section:{
+      title:"",
+      text:[],
+      group: [],
+      sections:[]
     }
-    })
-  )
-}
+  }
+
+  changeHandlerOperation = (e) =>{
+    let value = e.target.value;
+    let id = e.target.id
+
+    this.setState(prevState => ({
+      ...prevState,
+      [id]: value
+
+      })
+    )
+  }
+
+  changeHandlerSection = (e) =>{
+    let value = e.target.value;
+    let id = e.target.id
+
+    this.setState(prevState => ({
+      ...prevState,
+      section: {
+        ...prevState.section,
+        [id]: value
+      }
+      })
+    )
+  }
+
+  addText = () =>{
+    this.setState(prevState => ({
+      text:[...prevState.text,""]
+      })
+    )
+
+  }
+
+  onTextChange = (e) =>{
+    let value = e.target.value;
+    let id = parseInt(e.target.id , 10)
+    this.setState(prevState =>({
+      text:{
+        ...prevState,
+        [id]: value
+      }   
+      })
+    )
+  }
 
   render() {
     return (
@@ -92,7 +124,39 @@ changeHandlerSection = (e) =>{
           <div>
              <Input addonBefore="Manual SubTitle:" defaultValue="" id="subtitle" value={this.state.subtitle} onChange={this.changeHandlerOperation.bind(this)}/>
           </div>  
-          <Collapse accordion defaultActiveKey={['1']}>
+          {/* <div>
+             <Input addonBefore="Manual SubTitle:" defaultValue="" id="0" value={this.state.text[0]} onChange={this.onTextChange.bind(this)}/>
+          </div>   */}
+          <div>
+          {
+            this.objList.map((obj)=> {
+              if(typeof obj.type === typeof ""){
+                console.log(obj.type)
+                switch(obj.type){
+                  case "text":
+                    console.log(obj.value)
+                      return(
+                        <Input addonBefore="Text:" defaultValue="" id="0" value={obj.value} onChange={this.onTextChange.bind(this)}/>
+                      )
+                  case "group":
+                  console.log(obj.value)
+                    obj.value.map((string)=>{
+                      console.log(string)
+                      return(
+                      <Input addonBefore="Text:" defaultValue="" id="0" value={string} onChange={this.onTextChange.bind(this)}/>
+                    )
+                    })
+                    
+                }
+              }
+            })
+            
+           
+              }
+              </div>
+
+          
+          {/* <Collapse accordion defaultActiveKey={['1']}>
           <Panel  key="1" style={customPanelStyle}>
             <div style={{ marginBottom: 16 }}>
               <Input addonBefore="Section Title:" defaultValue="" />
@@ -104,11 +168,11 @@ changeHandlerSection = (e) =>{
               <AddButton text="Table" />
             </div>
           </Panel>
-          </Collapse> 
+          </Collapse>  */}
             <div>
               <AddButton text="Section"/>
               <AddButton text="Group"/>
-              <AddButton text="Text" onClick = {AddText}/>
+              <AddButton text="Text" onClick = {this.addText} />
               <AddButton text="Table"/>
             </div>
           </div>
@@ -120,26 +184,8 @@ changeHandlerSection = (e) =>{
     )
   }
 }
-// const onAddItem = (e) => {
-//   // not allowed AND not working
-//   this.setState(state => {
-//     this.state.text = this.state.text.push(e);
-//   });
-//   console.log(this.state.text)
-// };
- const AddText = () =>{
-  console.log("works")
-  // var newtextentry = "";
-  // onAddItem(newtextentry)
-  return(
-    <div>
-      <Input defaultValue="" id="title"  />
-    </div>  
-  )
-}
 
 class AddButton extends React.Component {
-
   render() {
       return (
         <Button type="dashed" text={this.props.text} onClick = {this.props.onClick}>
@@ -149,12 +195,6 @@ class AddButton extends React.Component {
   }
 }
 
-
-///addText
-//create div pop up
-//pop up based on state
-// create empty string 
-// length of text list add input ie. text:["dfds",""] add to length.state.text 
 
 
 export default App;
