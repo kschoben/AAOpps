@@ -21,12 +21,7 @@ class App extends Component {
   state = {
     title:"",
     subtitle:"",
-    objList:[
-    {type:"text", value: "This is a test "},
-    {type:"text", value: "This is a test2"},
-    {type:"group", value: [{type:"text", value: "This is a test2"}, {type:"text", value: "This is a test2"}]},
-    {type:"section", value: "This is a test4"} 
-    ]
+    objList:[]
   }
 
   changeHandler = (e) =>{
@@ -53,13 +48,13 @@ class App extends Component {
 
   addGroup = () =>{
     this.setState(prevState => ({
-      objList:[...prevState.objList, {type:"group",value:[""]} ]
+      objList:[...prevState.objList, {type:"group",value:[{type:"text",value:""}]}]
       })
     )
   }
 
   addGroupText = (e,id) =>{
-    console.log(id)
+    console.log(this.state.objList[id].value)
     this.setState(prevState => ({
       objList: update(this.state.objList, {[id]:{value:{$push:[{type:"text",value:""}]}}})
       })
@@ -74,14 +69,34 @@ class App extends Component {
         })
       )
   }
+
+  deleteTextbox(id) {
+    const objList1 = this.state.objList
+    console.log(objList1)
+    objList1.splice(id, 0);
+    console.log( objList1.splice(id,1))
+    console.log(objList1)
+    this.setState(prevState => ({
+      objList:objList1
+      }))
+    }
+
+    deleteGroupTextbox(id, groupIndex) {
+      const objList1 = this.state.objList
+      console.log(objList1)
+      objList1.splice(id, 0);
+      console.log( objList1[id].value.splice(groupIndex,1))
+      console.log(objList1)
+      this.setState(prevState => ({
+        objList:objList1
+        }))
+      }
+  
+  
+
   onGroupTextChange = (e,key) =>{
-    console.log("key:", key)
-    console.log("e: ", e)
     let val = e.target.value
     let id = e.target.id
-    console.log(val)
-    console.log(id)
-    console.log(this.state.objList.key)
       this.setState(({
         objList: update(this.state.objList, {[key]:{value:{[id]:{value:{$set: val}}}}})
         })
@@ -116,10 +131,10 @@ class App extends Component {
         </div>
         <div style={{ background: '#fff', padding: 24 }}>
           <div>
-            <Input style={{padding:10}} addonBefore="Manual Title:" defaultValue="" id="title" value={this.state.title} onChange={this.changeHandler.bind(this)}/>
+            <Input addonBefore="Manual Title:" defaultValue="" id="title" value={this.state.title} onChange={this.changeHandler.bind(this)}/>
           </div>  
           <div>
-             <Input style={{padding:10}} addonBefore="Manual SubTitle:" defaultValue="" id="subTitle" value={this.state.subTitle} onChange={this.changeHandler.bind(this)}/>
+             <Input  addonBefore="Manual SubTitle:" defaultValue="" id="subtitle" value={this.state.subtitle} onChange={this.changeHandler.bind(this)}/>
           </div>  
           <div>
           {
@@ -128,13 +143,13 @@ class App extends Component {
                 switch(obj.type){
                   case "text":
                       return(
-                          <Text  key={index} id={index} value={this.state.objList[index].value} onChange={this.onTextChange.bind(this)} />
+                          <Text   key={index} id={index} onClick = {() => this.deleteTextbox(index)} value={this.state.objList[index].value} onChange={this.onTextChange.bind(this)} />
                       )
 
                   case "group":
                       return(
                         <div key={index}  style={{padding:10}}>
-                          <Group id={index} group={this.state.objList[index]} onClick = {this.addGroupText} onChange={this.onGroupTextChange} /> 
+                          <Group id={index} group={this.state.objList[index]} onClickRemoveGroupText = {() => this.deleteGroupTextbox(index)} onClickRemove = {() => this.deleteTextbox(index)} onClick = {this.addGroupText} onChange={this.onGroupTextChange} /> 
                         </div>
                       )
 
@@ -189,7 +204,10 @@ class AddButton extends React.Component {
 class Text extends React.Component {
   render() {
     return(
-      <Input style={{padding:10}} key={this.props.index}  addonBefore="Text:" id={this.props.id} value={this.props.value} onChange={this.props.onChange}/>
+      <div class="textrow">
+      <Input  key={this.props.index}  addonBefore="Text:" id={this.props.id} value={this.props.value} onChange={this.props.onChange}/>
+      <button class="textdeletebutton" onClick={this.props.onClick}><Icon type="close-circle" /></button>
+      </div>
     )
   }
 }
@@ -201,12 +219,15 @@ class Group extends React.Component {
       <div>
       {group.value.map((text,groupIndex)=>{
         return( 
+          <div class="textrow">
             <Input addonBefore="Group:" key={groupIndex} id={groupIndex} value={text.value} onChange={(e) => this.props.onChange(e, id)}/>
-            
+            <button class="textdeletebutton"><Icon type="close-circle" onClick = {() => this.props.onClickRemoveGroupText(id,groupIndex)}/></button>
+          </div>
         )
     })
    }
     <AddButton text="Text" onClick = {(e)=>this.props.onClick(e,id)}/>
+    <AddButton text="Remove" onClick = {()=>this.props.onClickRemove(id)}/>
   </div>
     )
   }
