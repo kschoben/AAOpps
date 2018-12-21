@@ -5,6 +5,7 @@
   "dependencies": {
     "antd": "^3.11.2",
     "react": "^16.6.3",
+    "react-addons-update": "^15.6.2",
     "react-dom": "^16.6.3",
     "react-scripts": "2.1.1"
   },
@@ -14,7 +15,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -25,4 +25,3 @@
     "not op_mini all"
   ]
 }
-
