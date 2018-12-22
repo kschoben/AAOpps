@@ -53,6 +53,13 @@ class App extends Component {
     )
   }
 
+  addSection = () =>{
+    this.setState(prevState => ({
+      objList:[...prevState.objList, {type:"section",value:[{type:"text",value:""}]}]
+      })
+    )
+  }
+
   addGroupText = (e,id) =>{
     console.log(this.state.objList[id].value)
     this.setState(prevState => ({
@@ -153,23 +160,19 @@ class App extends Component {
                         </div>
                       )
 
-                  // case "section":
-                  // console.log(obj.value)
-                  //   return(
-                  //     <Collapse  accordion defaultActiveKey={['1']}>
-                  //         <Panel style={{padding:10}} key="1" style={customPanelStyle}>
-                  //           <div style={{ marginBottom: 16 }}>
-                  //             <Input addonBefore="Section Title:" defaultValue="" />
-                  //           </div>
-                  //           <div>
-                  //             <AddButton text="Section"/>
-                  //             <AddButton text="Group"/>
-                  //             <AddButton text="Text" />
-                  //             <AddButton text="Table" />
-                  //           </div>
-                  //         </Panel>
-                  //     </Collapse>
-                  //   )
+                   case "section":
+                      return(
+                        <Section   
+                            key={index} 
+                            id={index} 
+                            value={this.state.objList[index].value} 
+                            
+                            //textbox
+                            onClickTextDelete = {() => this.deleteTextbox(index)} 
+                            onChangeText={this.onTextChange.bind(this)}
+                            //group
+                            />
+                )
                   }
                 }
               })
@@ -177,7 +180,7 @@ class App extends Component {
             </div>
             
             <div style={{padding:10}}>
-              <AddButton text="Section"/>
+              <AddButton text="Section" onClick={this.addSection}/>
               <AddButton text="Group" onClick = {this.addGroup}/>
               <AddButton text="Text" onClick = {this.addText} />
               <AddButton text="Table"/>
@@ -233,4 +236,49 @@ class Group extends React.Component {
   }
 }
 
+class Section extends React.Component {
+  // cycleSection(sectionValue){
+  //   let idPath = []
+  //   sectionValue.Value.map((val,subIndex) => {
+  //     if(sectionValue[subindex].value === "section"){
+  //       //return section to render
+  //       //cycleSection(sectionValue[subIndex].value)
+  //     }
+  //     if(sectionValue[subIndex].value === "group"){
+  //       return(
+  //         <div>
+  //           {section.value.map((text,groupIndex)=>{
+  //             return( 
+  //               <div class="textrow">
+  //                 <Input addonBefore="Group:" key={groupIndex} id={groupIndex} value={text.value} onChange={(e) => this.props.onChange(e, id)}/>
+  //                 <button class="textdeletebutton"><Icon type="close-circle" onClick = {() => this.props.onClickRemoveGroupText(id,groupIndex)}/></button>
+  //               </div>
+  //             )
+  //           })}  
+  //           <AddButton text="Text" onClick = {(e)=>this.props.onClick(e,id)}/>
+  //           <AddButton text="Remove" onClick = {()=>this.props.onClickRemove(id)}/>
+  //         </div>
+  //       )
+  //     }
+  //     if(sectionValue[subindex].value === "text"){
+  //       return(
+  //         <div class="textrow">
+  //         <Input  key={this.props.index}  addonBefore="Text:" id={this.props.id} value={this.props.value} onChange={this.props.onChange}/>
+  //         <button class="textdeletebutton" onClick={this.props.onClick}><Icon type="close-circle" /></button>
+  //         </div>
+  //       )
+  //     }
+  //   })
+  // }
+  
+  render() {
+    const { value, id } = this.props
+    return(
+      <div>
+        <AddButton text="Text" onClick = {(e)=>this.props.onClick(e,id)}/>
+        <AddButton text="Remove" onClick = {()=>this.props.onClickRemove(id)}/>
+      </div>
+    )
+  }
+}
 export default App;
